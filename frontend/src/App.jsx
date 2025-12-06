@@ -43,7 +43,6 @@ function App() {
 
       <div className="relative z-50 pt-20">
         <Navbar />
-        <HashRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route
@@ -81,7 +80,6 @@ function App() {
             />
             <Route path="/demo" element={<StripeDemo />} />
           </Routes>
-        </HashRouter>
       </div>
       <Toaster />
     </div>
