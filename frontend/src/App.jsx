@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
@@ -18,52 +19,73 @@ import PurchaseCancelPage from "./pages/PurchaseCancelPage";
 import StripeDemo from "./components/StripeDemo";
 
 function App() {
-	const { user, checkAuth, checkingAuth } = useUserStore();
-	const { getCartItems } = useCartStore();
-	useEffect(() => {
-		checkAuth();
-	}, [checkAuth]);
+  const { user, checkAuth, checkingAuth } = useUserStore();
+  const { getCartItems } = useCartStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
-	useEffect(() => {
-		if (!user) return;
+  useEffect(() => {
+    if (!user) return;
 
-		getCartItems();
-	}, [getCartItems, user]);
+    getCartItems();
+  }, [getCartItems, user]);
 
-	if (checkingAuth) return <LoadingSpinner />;
+  if (checkingAuth) return <LoadingSpinner />;
 
-	return (
-		<div className='min-h-screen bg-[#0f0b1a] text-white relative overflow-hidden'>
-	<div className='absolute inset-0 overflow-hidden'>
-		<div className='absolute inset-0'>
-			<div className='absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(167,139,250,0.35)_0%,rgba(88,28,135,0.25)_45%,rgba(0,0,0,0.1)_100%)]' />
-		</div>
-	</div>
+  return (
+    <div className="min-h-screen bg-[#0f0b1a] text-white relative overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(167,139,250,0.35)_0%,rgba(88,28,135,0.25)_45%,rgba(0,0,0,0.1)_100%)]" />
+        </div>
+      </div>
 
-
-			<div className='relative z-50 pt-20'>
-				<Navbar />
-				<Routes>
-					<Route path='/' element={<HomePage />} />
-					<Route path='/signup' element={!user ? <SignUpPage /> : <Navigate to='/' />} />
-					<Route path='/login' element={!user ? <LoginPage /> : <Navigate to='/' />} />
-					<Route
-						path='/secret-dashboard'
-						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}
-					/>
-					<Route path='/category/:category' element={<CategoryPage />} />
-					<Route path='/cart' element={user ? <CartPage /> : <Navigate to='/login' />} />
-					<Route
-						path='/purchase-success'
-						element={user ? <PurchaseSuccessPage /> : <Navigate to='/login' />}
-					/>
-					<Route path='/purchase-cancel' element={user ? <PurchaseCancelPage /> : <Navigate to='/login' />} />
-					<Route path="/demo" element={<StripeDemo/>} />
-				</Routes>
-			</div>
-			<Toaster />
-		</div>
-	);
+      <div className="relative z-50 pt-20">
+        <Navbar />
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/signup"
+              element={!user ? <SignUpPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/login"
+              element={!user ? <LoginPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/secret-dashboard"
+              element={
+                user?.role === "admin" ? (
+                  <AdminPage />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route path="/category/:category" element={<CategoryPage />} />
+            <Route
+              path="/cart"
+              element={user ? <CartPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/purchase-success"
+              element={
+                user ? <PurchaseSuccessPage /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/purchase-cancel"
+              element={user ? <PurchaseCancelPage /> : <Navigate to="/login" />}
+            />
+            <Route path="/demo" element={<StripeDemo />} />
+          </Routes>
+        </HashRouter>
+      </div>
+      <Toaster />
+    </div>
+  );
 }
 
 export default App;
