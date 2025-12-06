@@ -140,4 +140,19 @@ export const useCartStore = create((set, get) => ({
   },
 }));
 
+// DEBUG - remove after use
+(function () {
+  const origMap = Array.prototype.map;
+  Array.prototype.map = function (...args) {
+    if (!Array.isArray(this)) {
+      // show the value and a stack trace to map the error to your source file
+      // eslint-disable-next-line no-console
+      console.error("DEBUG: map called on non-array:", this, new Error().stack);
+      return [];
+    }
+    return origMap.apply(this, args);
+  };
+})();
+
+
 export default useCartStore;
