@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/:path*" },
+    { "source": "/:path*\\.:ext(js|css|png|jpg|jpeg|svg|ico|map|json|wasm)", "destination": "/:path*.:ext" },
+    { "source": "/:path*", "destination": "/index.html" }
+  ]
+}
